@@ -1,0 +1,15 @@
+{
+  "name": "nestjs-graphql-microservices",
+  "version": "0.0.1",
+  "description": "A sample GraphQL API Gateway with gRPC back-end microservices built using the NestJS framework.",
+  "scripts": {
+    "install-all": "sh ./scripts/install.sh",
+    "lint": "sh ./scripts/lint.sh",
+    "build": "sh ./scripts/build.sh",
+    "docker:build": "docker-compose build",
+    "docker:start": "docker-compose up",
+    "docker:teardown": "docker-compose down",
+    "start": "npm run install && npm run lint && npm run build && npm run docker:build && npm run docker:start"
+  },
+  "license": "MIT"
+}
