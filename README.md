@@ -1,4 +1,4 @@
-# social microservices project
+# social microservices project NestJS and gRPC
 - Docs
 ## Install Package and start project
 ### environment
