@@ -1,24 +1,29 @@
-FROM node:18-alpine as build
+FROM node:18 as build
 
-WORKDIR /usr/share/auth
+# Thiết lập thư mục làm việc trong container
+WORKDIR /usr/app/auth
 
-ADD dist package.json ./
+# Sao chép tệp package.json và package-lock.json vào thư mục làm việc
+COPY ./package.json ./package-lock.json ./
 
-RUN apk add --no-cache make g++ python postgresql-dev \
-  && npm install --production
+# Cài đặt các dependencies
+RUN npm install
 
-FROM node:18-alpine
+# Sao chép mã nguồn của Auth service vào thư mục làm việc
+COPY ./src ./src
 
-RUN apk add --no-cache libpq
+# Sao chép tệp nest-cli.json vào thư mục làm việc
+COPY ./nest-cli.json ./
 
-ADD https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.2/grpc_health_probe-linux-amd64 /bin/grpc_health_probe
+# Sao chép tệp tsconfig.json vào thư mục làm việc
+COPY ./tsconfig.json ./
 
-RUN chmod +x /bin/grpc_health_probe
+# Xây dựng ứng dụng NestJS
+RUN npm run build
 
-WORKDIR /usr/share/auth
-
-COPY --from=build /usr/share/auth .
-
+# Mở cổng 50051 trong container
 EXPOSE 50051
 
-CMD ["node", "main.js"]
+# Chạy ứng dụng NestJS khi container được khởi chạy
+CMD ["npm", "run", "start:prod"]
+
