@@ -1,34 +1,31 @@
 version: "3"
 
 services:
- 
-  auth:
-    image: "auth:dev"
-    container_name: "auth"
+  auth-svc:
+    image: "auth-svc:dev"
+    container_name: "auth-svc"
     env_file:
-      - ./apps/auth/.env
+      - ./apps/auth-svc/.env
     build:
-      context: "./apps/auth"
-    networks:
-      - "frontend"
-      - "backend"
-      - "auth-domain"
-    expose:
-      - "50051"
+      context: "./apps/auth-svc"
+    ports:
+      - "50051:50051"
     depends_on:
       - "auth-db"
       - "cache"
     environment:
       NODE_ENV: "development"
-      GRPC_HOST: "127.0.0.1"
+      GRPC_HOST: "0.0.0.0"
       GRPC_PORT: "50051"
+      GRPC_TRACE: "all"
+      GRPC_VERBOSITY: "DEBUG"
       DB_HOST: "auth-db"
       DB_PORT: "5432"
       DB_USERNAME: "postgres"
       DB_PASSWORD: "postgres"
       DB_DATABASE: "postgres"
       DB_SCHEMA: "public"
-      DB_SYNC: true
+      DB_SYNC: "true"
       REDIS_HOST: "cache"
       REDIS_PORT: "6379"
     healthcheck:
@@ -37,43 +34,43 @@ services:
       timeout: 10s
       retries: 5
     restart: "on-failure"
+    networks:
+      - backend
 
- 
   gateway:
     image: "gateway:dev"
     container_name: "gateway"
     build:
       context: "./gateway"
-    networks:
-      - "frontend"
     ports:
       - "3000:3000"
     depends_on:
       - "cache"
-      - "auth"
+      - "auth-svc"
     environment:
       NODE_ENV: "development"
       AUTH_SERVICE_URL: "127.0.0.1:50051"
-      GRAPHQL_PORT: "3000"
+      GATEWAY_PORT: "3000"
       JWT_ACCESSTOKEN_SECRET: "VtWeuJo5cPrH1gzvLX0HwPkcbVVeMkV0/a2JFeP3hGE="
       JWT_REFRESHTOKEN_SECRET: "tPQz6vb7nJDilma85OQExilvgZX+QyEf1CL95DmfBLA="
       JWT_ISSUER: "application"
       JWT_AUDIENCE: "public"
-      AUTH_URL: "127.0.0.1:50051"
+      AUTH_URL: "auth-svc:50051"
       REDIS_HOST: "cache"
       REDIS_PORT: "6379"
     healthcheck:
-      test: ["CMD", "wget", "localhost:3000/healthz -q -O - > /dev/null 2>&1"]
+      test: ["CMD", "wget", "http://localhost:3000/healthz", "-q", "-O", "-", ">", "/dev/null", "2>&1"]
       interval: 30s
       timeout: 10s
       retries: 5
     restart: "on-failure"
+    networks:
+      - frontend
+      - backend
 
   auth-db:
     image: "postgres:15"
     container_name: "auth-db"
-    networks:
-      - "auth-domain"
     expose:
       - "5432"
     volumes:
@@ -82,26 +79,28 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
     healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres'"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 30s
       timeout: 30s
       retries: 3
     restart: "on-failure"
+    networks:
+      - auth-domain
 
   cache:
     image: "redis:5-alpine"
     container_name: "redis-cache"
-    networks:
-      - "frontend"
-      - "backend"
     expose:
       - "6379"
     healthcheck:
-      test: ["CMD-SHELL", "sh -c 'redis-cli PING'"]
+      test: ["CMD-SHELL", "redis-cli ping"]
       interval: 30s
       timeout: 30s
       retries: 3
     restart: "on-failure"
+    networks:
+      - frontend
+      - backend
 
 networks:
   frontend:
