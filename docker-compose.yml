@@ -20,7 +20,7 @@ services:
       - "cache"
     environment:
       NODE_ENV: "development"
-      GRPC_HOST: "0.0.0.0"
+      GRPC_HOST: "127.0.0.1"
       GRPC_PORT: "50051"
       DB_HOST: "auth-db"
       DB_PORT: "5432"
@@ -53,13 +53,13 @@ services:
       - "auth"
     environment:
       NODE_ENV: "development"
-      AUTH_SERVICE_URL: "0.0.0.0:50051"
+      AUTH_SERVICE_URL: "127.0.0.1:50051"
       GRAPHQL_PORT: "3000"
       JWT_ACCESSTOKEN_SECRET: "VtWeuJo5cPrH1gzvLX0HwPkcbVVeMkV0/a2JFeP3hGE="
       JWT_REFRESHTOKEN_SECRET: "tPQz6vb7nJDilma85OQExilvgZX+QyEf1CL95DmfBLA="
       JWT_ISSUER: "application"
       JWT_AUDIENCE: "public"
-      AUTH_URL: "0.0.0.0:50051"
+      AUTH_URL: "127.0.0.1:50051"
       REDIS_HOST: "cache"
       REDIS_PORT: "6379"
     healthcheck:

@@ -11,39 +11,40 @@
 
 
 ## Directory structure 
- app/
-    - _proto
-    - apps/
-      - auth/
-        - src/
-          - auth/
-            - auth.controller.ts
-            - auth.module.ts
-            - auth.proto
-            - auth.service.ts
-          - app.controller.ts
-          - app.module.ts
-          - app.service.ts
-          - main.ts
-        - test
-        - Dockerfile
-        - package.json
-        - ...
-    - gateway/
+``` shell
+- app/
+  - _proto
+  - apps/
+    - auth/
       - src/
         - auth/
-          - auth.module.ts
           - auth.controller.ts
-          - auth.interface.ts
+          - auth.module.ts
+          - auth.proto
+          - auth.service.ts
         - app.controller.ts
         - app.module.ts
         - app.service.ts
         - main.ts
       - test/
+      - Dockerfile
+      - package.json
       - ...
-    - docs/
-    - scripts/
-    - shared/
-    - docker-compos.yml
-    - package.json
-  
+  - gateway/
+    - src/
+      - auth/
+        - auth.module.ts
+        - auth.controller.ts
+        - auth.interface.ts
+      - app.controller.ts
+      - app.module.ts
+      - app.service.ts
+      - main.ts
+    - test/
+    - ...
+  - docs/
+  - scripts/
+  - shared/
+  - docker-compose.yml
+  - package.json
+```
