@@ -12,4 +12,5 @@
     "start": "npm run install && npm run lint && npm run build && npm run docker:build && npm run docker:start"
   },
   "license": "MIT"
+  
 }
