@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions } from '@nestjs/microservices';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { LoggerService } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
 
 import { AppModule } from './app.module';
-import { grpcClientOptions } from './grpc-client.options';
+import { join } from 'path';
 async function bootstrap() {
   /**
    * This example contains a hybrid application (HTTP + gRPC)
@@ -20,13 +20,33 @@ async function bootstrap() {
    * await app.listen();
    *
    */
-  const app = await NestFactory.create(AppModule, { bufferLogs: true });
-  app.connectMicroservice<MicroserviceOptions>(grpcClientOptions);
+  // const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  // app.connectMicroservice<MicroserviceOptions>(grpcClientOptions);
+  // app.useLogger(app.get<Logger, LoggerService>(Logger));
+  // await app.startAllMicroservices();
+  // await app.listen(50051);
+  // console.log(`Application is running on: ${await app.getUrl()}`);
+
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.GRPC,
+      options: {
+        url: `${process.env.GRPC_HOST}:${process.env.GRPC_PORT}`,
+        package: 'auth', // ['hero', 'hero2']
+        protoPath: join(__dirname, './_proto/auth.proto'), // ['./hero/hero.proto', './hero/hero2.proto']
+        loader: {
+          keepCase: true,
+          enums: String,
+          oneofs: true,
+          arrays: true,
+        },
+      },
+    },
+  );
+
   app.useLogger(app.get<Logger, LoggerService>(Logger));
 
-  await app.startAllMicroservices();
-  await app.listen(process.env.GRPC_PORT || 50051);
-
-  console.log(`Application is running on: ${await app.getUrl()}`);
+  return app.listen();
 }
 bootstrap();

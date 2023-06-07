@@ -8,7 +8,7 @@
 ### install
 - Clone: `$ git clone https://github.com/devhoangkien/social-microservices.git`
 - Install package: `cd social-microservices && yarn install-all || npm run install-all`
-
+- docker: `yarn build `, `docker compose up`
 
 ## Directory structure 
 ``` shell

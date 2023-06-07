@@ -6,6 +6,8 @@
     "install-all": "sh ./scripts/install.sh",
     "lint": "sh ./scripts/lint.sh",
     "build": "sh ./scripts/build.sh",
+    "prod": "sh ./scripts/prod.sh",
+    "dev": "sh ./scripts/dev.sh",
     "docker:build": "docker-compose build",
     "docker:start": "docker-compose up",
     "docker:teardown": "docker-compose down",
