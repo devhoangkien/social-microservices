@@ -15,13 +15,35 @@
 - app/
   - _proto
   - apps/
-    - auth/
+    - auth-svc/
       - src/
-        - auth/
-          - auth.controller.ts
-          - auth.module.ts
-          - auth.proto
-          - auth.service.ts
+        - _proto
+        - config
+        - database
+        - middleware
+          - exception
+          - guards
+          - interceptor
+        - models
+          - user.entity.ts
+          ...
+        - modules
+          - auth/
+            - auth.controller.ts
+            - auth.module.ts
+            - auth.service.ts
+          - roles/
+            - roles.controller.ts
+            - roles.module.ts
+            - roles.service.ts
+          - permissions/
+            - permissions.controller.ts
+            - permissions.module.ts
+            - permissions.service.ts
+        - shared
+          - exception
+            - exception.enum.ts
+            - index.ts
         - app.controller.ts
         - app.module.ts
         - app.service.ts
