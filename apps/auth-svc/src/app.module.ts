@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { ConfigService, ConfigModule } from '@nestjs/config';
 import { LoggerModule, PinoLogger } from 'nestjs-pino';
+import { RolesModule } from './modules/roles/roles.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { LoggerModule, PinoLogger } from 'nestjs-pino';
       },
     }),
     AuthModule,
+    RolesModule,
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
