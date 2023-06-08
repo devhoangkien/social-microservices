@@ -52,6 +52,9 @@
       - Dockerfile
       - package.json
       - ...
+    - payment-svc
+      - ...
+    - ...
   - gateway/
     - src/
       - auth/
