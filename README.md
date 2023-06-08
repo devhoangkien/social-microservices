@@ -73,3 +73,5 @@
   - docker-compose.yml
   - package.json
 ```
+
+![Image Description](./docs/images/microservice.png)
