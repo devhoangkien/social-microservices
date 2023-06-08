@@ -19,7 +19,7 @@ import { join } from 'path';
         return ClientProxyFactory.create({
           transport: Transport.GRPC,
           options: {
-            url: configService.get<string>('AUTH_SERVICE_URL'),
+            url: configService.get<string>('AUTH_SVC_URL'),
             package: 'auth',
             protoPath: join(__dirname, '../_proto/auth.proto'),
             loader: {

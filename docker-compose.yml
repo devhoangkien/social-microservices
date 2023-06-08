@@ -21,9 +21,9 @@ services:
       GRPC_VERBOSITY: "DEBUG"
       DB_HOST: "auth-db"
       DB_PORT: "5432"
+      DB_NAME: "social-auth"
       DB_USERNAME: "postgres"
       DB_PASSWORD: "postgres"
-      DB_DATABASE: "postgres"
       DB_SCHEMA: "public"
       DB_SYNC: "true"
       REDIS_HOST: "cache"
@@ -36,6 +36,45 @@ services:
     restart: "on-failure"
     networks:
       - backend
+      - frontend
+      - auth-domain
+  payment-svc:
+    image: "payment-svc:dev"
+    container_name: "payment-svc"
+    env_file:
+      - ./apps/payment-svc/.env
+    build:
+      context: "./apps/payment-svc"
+    expose:
+      - 50051"
+    depends_on:
+      - "payment-db"
+      - "cache"
+    environment:
+      NODE_ENV: "development"
+      GRPC_HOST: "0.0.0.0"
+      GRPC_PORT: "50051"
+      GRPC_TRACE: "all"
+      GRPC_VERBOSITY: "DEBUG"
+      DB_HOST: "auth-db"
+      DB_PORT: "5432"
+      DB_USERNAME: "postgres"
+      DB_PASSWORD: "postgres"
+      DB_NAME: "social-payment"
+      DB_SCHEMA: "public"
+      DB_SYNC: "true"
+      REDIS_HOST: "cache"
+      REDIS_PORT: "6379"
+    healthcheck:
+      test: ["CMD", "/bin/grpc_health_probe", "-addr=:50051"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: "on-failure"
+    networks:
+      - backend
+      - frontend
+      - payment-domain
 
   gateway:
     image: "gateway:dev"
@@ -47,9 +86,11 @@ services:
     depends_on:
       - "cache"
       - "auth-svc"
+      - "payment-svc"
     environment:
       NODE_ENV: "development"
-      AUTH_SERVICE_URL: "auth-svc:50051"
+      AUTH_SVC_URL: "auth-svc:50051"
+      PAYMENT_SVC_URL: "payment-svc:50051"
       GATEWAY_PORT: "3000"
       JWT_ACCESSTOKEN_SECRET: "VtWeuJo5cPrH1gzvLX0HwPkcbVVeMkV0/a2JFeP3hGE="
       JWT_REFRESHTOKEN_SECRET: "tPQz6vb7nJDilma85OQExilvgZX+QyEf1CL95DmfBLA="
@@ -65,7 +106,6 @@ services:
     restart: "on-failure"
     networks:
       - frontend
-      - backend
 
   auth-db:
     image: "postgres:15"
