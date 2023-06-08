@@ -1,20 +1,26 @@
 import { Sequelize } from 'sequelize-typescript';
-import { UserModel } from 'src/models/user.entity';
 
+import { DB_CONFIG, DB_POOL_CONFIG } from 'src/config/dotnet';
+import { UserModel } from 'src/models/user.entity';
+import { Logger } from '@nestjs/common';
+
+const logger = new Logger('DatabaseProvider');
+const models = [UserModel];
 export const databaseProviders = [
   {
     provide: 'SEQUELIZE',
     useFactory: async () => {
       const sequelize = new Sequelize({
-        dialect: 'postgres',
-        host: process.env.DB_HOST || 'localhost',
-        port: Number(process.env.DB_PORT) || 5432,
-        username: process.env.DB_USERNAME || 'postgres',
-        password: process.env.DB_PASSWORD || 'postgres',
-        database: process.env.DB_NAME || 'postgres',
+        ...DB_CONFIG,
+        dialectOptions: {
+          supportBigNumbers: true,
+        },
+        pool: DB_POOL_CONFIG,
       });
-      sequelize.addModels([UserModel]);
-      await sequelize.sync();
+      sequelize.addModels(models);
+      await sequelize.sync().then(async () => {
+        logger.log('generate database done');
+      });
       return sequelize;
     },
   },
