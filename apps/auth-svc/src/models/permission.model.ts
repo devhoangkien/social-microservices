@@ -10,7 +10,7 @@ import {
 import { Role } from './role.model';
 import { RolePermission } from './rolePermission.model';
 
-@Table({ tableName: 'permissions' })
+@Table({ tableName: 'permissions', underscored: true, timestamps: false })
 export class Permission extends Model<Permission> {
   @Column({
     type: DataType.UUID,

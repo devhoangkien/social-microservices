@@ -8,13 +8,19 @@ import {
   PrimaryKey,
   DataType,
   BelongsToMany,
+  HasMany,
+  HasOne,
 } from 'sequelize-typescript';
 
 import { Role } from './role.model';
 import { UserRole } from './userRole.model';
+import { Session } from './session.model';
+import { RefreshToken } from './refresh-token.model';
+import { UserSetting } from './user-setting.model';
 
 @Table({
   tableName: 'users',
+  underscored: true,
   indexes: [
     {
       fields: ['email', 'phone', 'name'],
@@ -48,21 +54,21 @@ export class User extends Model<User> {
   @BelongsToMany(() => Role, () => UserRole)
   roles: Role[];
 
+  @HasMany(() => Session)
+  sessions: Session[];
+
+  @HasMany(() => RefreshToken)
+  refreshTokens: RefreshToken[];
+
+  @HasOne(() => UserSetting)
+  userSetting: UserSetting;
+
   @CreatedAt
-  @Column({
-    field: 'created_at',
-  })
   createdAt: Date;
 
   @UpdatedAt
-  @Column({
-    field: 'updated_at',
-  })
   updatedAt: Date;
 
   @DeletedAt
-  @Column({
-    field: 'deleted_at',
-  })
   deletedAt: Date;
 }

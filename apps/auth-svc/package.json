@@ -19,7 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "copy:protos": "cp -r ../../_proto ./src/",
-    "migration:run": "npx sequelize-cli db:migrate",
+    "mrun": "npx sequelize-cli db:migrate",
     "db:create": "npx sequelize-cli db:create",
     "migration:revert": "npx sequelize-cli db:migrate:undo",
     "mg": "sequelize-cli migration:generate --name",

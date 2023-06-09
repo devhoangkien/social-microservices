@@ -11,7 +11,7 @@ import {
 import { User } from './user.model';
 import { UserRole } from './userRole.model';
 
-@Table({ tableName: 'roles' })
+@Table({ tableName: 'roles', underscored: true })
 export class Role extends Model<Role> {
   @Column({
     type: DataType.UUID,
@@ -25,6 +25,12 @@ export class Role extends Model<Role> {
     allowNull: false,
   })
   name: string;
+
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  level: number;
 
   @BelongsToMany(() => User, () => UserRole)
   users: User[];

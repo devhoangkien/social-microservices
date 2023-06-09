@@ -15,7 +15,7 @@ interface UserRoleAttribute {
   userId: UUID;
   roleId: UUID;
 }
-@Table({ tableName: 'user_roles' })
+@Table({ tableName: 'user_roles', underscored: true, timestamps: false })
 export class UserRole extends Model<UserRoleAttribute> {
   @ForeignKey(() => User)
   @Column({
