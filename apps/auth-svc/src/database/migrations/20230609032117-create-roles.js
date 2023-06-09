@@ -6,7 +6,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        defaultValue: fn('uuid_generate_v4')(),
       },
       name: {
         allowNull: false,
@@ -16,21 +16,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      created_at: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-      },
-      updated_at: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-      },
-      deleted_at: {
+      permissions: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
         allowNull: true,
-        type: Sequelize.DATE,
       },
     });
+
+    await queryInterface.sequelize.query(
+      'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";',
+    );
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('roles');

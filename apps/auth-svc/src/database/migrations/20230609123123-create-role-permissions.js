@@ -13,12 +13,12 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      permission_id: {
-        type: Sequelize.UUID,
+      permission_key: {
+        type: Sequelize.STRING,
         allowNull: false,
         references: {
           model: 'permissions',
-          key: 'id',
+          key: 'key',
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',

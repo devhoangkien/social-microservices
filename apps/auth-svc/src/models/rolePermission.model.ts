@@ -21,8 +21,8 @@ export class RolePermission extends Model<RolePermission> {
 
   @ForeignKey(() => Permission)
   @Column({
-    type: DataType.UUID,
+    type: DataType.STRING,
     allowNull: false,
   })
-  permissionId: string;
+  permissionKey: string;
 }

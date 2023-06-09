@@ -3,12 +3,23 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('permissions', {
-      id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+      key: {
+        type: Sequelize.STRING,
+        allowNull: false,
         primaryKey: true,
       },
+
       name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+
+      value: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+
+      group: {
         type: Sequelize.STRING,
         allowNull: false,
       },
