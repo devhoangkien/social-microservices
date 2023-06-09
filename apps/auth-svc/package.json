@@ -20,8 +20,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "copy:protos": "cp -r ../../_proto ./src/",
     "migration:run": "npx sequelize-cli db:migrate",
+    "db:create": "npx sequelize-cli db:create",
     "migration:revert": "npx sequelize-cli db:migrate:undo",
-    "migration:generate": "sequelize-cli migration:generate --name",
+    "mg": "sequelize-cli migration:generate --name",
     
     "seed:run": "npx sequelize-cli db:seed:all",
     "seed:revert": "npx sequelize-cli db:seed:undo",

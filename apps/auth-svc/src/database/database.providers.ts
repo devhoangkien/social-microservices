@@ -1,11 +1,18 @@
 import { Sequelize } from 'sequelize-typescript';
 
 import { DB_CONFIG, DB_POOL_CONFIG } from 'src/config/dotnet';
-import { UserModel } from 'src/models/user.entity';
+import { User } from 'src/models/user.model';
 import { Logger } from '@nestjs/common';
+import { Role } from 'src/models/role.model';
+import { Permission } from 'src/models/permission.model';
+import { UserRole } from 'src/models/userRole.model';
+import { RolePermission } from 'src/models/rolePermission.model';
 
 const logger = new Logger('DatabaseProvider');
-const models = [UserModel];
+
+// add models here
+const models = [User, Role, Permission, UserRole, RolePermission];
+
 export const databaseProviders = [
   {
     provide: 'SEQUELIZE',

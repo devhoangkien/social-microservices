@@ -7,7 +7,11 @@ import {
   DeletedAt,
   PrimaryKey,
   DataType,
+  BelongsToMany,
 } from 'sequelize-typescript';
+
+import { Role } from './role.model';
+import { UserRole } from './userRole.model';
 
 @Table({
   tableName: 'users',
@@ -16,17 +20,21 @@ import {
       fields: ['email', 'phone', 'name'],
     },
   ],
-  hooks: {
-    beforeCreate: (user: UserModel) => {},
-  },
 })
-export class UserModel extends Model<UserModel> {
+export class User extends Model<User> {
   @PrimaryKey
-  @Column(DataType.UUIDV4)
+  @Column({
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
+    primaryKey: true,
+  })
   id: number;
 
   @Column
   name: string;
+
+  @Column
+  username: string;
 
   @Column
   email: number;
@@ -36,6 +44,9 @@ export class UserModel extends Model<UserModel> {
 
   @Column
   phone: string;
+
+  @BelongsToMany(() => Role, () => UserRole)
+  roles: Role[];
 
   @CreatedAt
   @Column({
