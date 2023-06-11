@@ -1,5 +1,3 @@
-// seeders/20230609000003-create-roles.js
-
 'use strict';
 
 module.exports = {
@@ -7,7 +5,6 @@ module.exports = {
     const permissions = await queryInterface.sequelize.query(
       `SELECT key FROM permissions;`,
     );
-    console.log('permissions: ', permissions);
     const permissionRows = permissions[0];
 
     const rolesData = [
@@ -21,7 +18,6 @@ module.exports = {
         level: 1,
         permissions: ['delete', 'update'],
       },
-      // Add more roles as needed
     ];
 
     const newRole = rolesData.map((role) => {

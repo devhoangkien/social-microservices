@@ -7,6 +7,8 @@ import { LoggerModule, PinoLogger } from 'nestjs-pino';
 import { RolesModule } from './modules/roles/roles.module';
 import { DatabaseModule } from './database/database.module';
 import { PermissionsModule } from './modules/permissions/permissions.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { join } from 'path';
 
 @Module({
   imports: [
