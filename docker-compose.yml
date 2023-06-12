@@ -130,10 +130,10 @@ services:
   payment-db:
     image: "postgres:15"
     container_name: "payment-db"
-    #expose:
-    # - "5432"
-    ports:
-      - 5432:5432
+    expose:
+    - "5432"
+    # ports:
+    #   - 5432:5432
     volumes:
       - payment-data:/var/lib/postgresql/data
     environment:

@@ -14,7 +14,7 @@ import { Permission } from './permission.model';
 export class RolePermission extends Model<RolePermission> {
   @ForeignKey(() => Role)
   @Column({
-    type: DataType.UUID,
+    type: DataType.INTEGER,
     allowNull: false,
   })
   roleId: string;

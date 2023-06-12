@@ -23,11 +23,10 @@
     "db:create": "npx sequelize-cli db:create",
     "migration:revert": "npx sequelize-cli db:migrate:undo",
     "init:migration": "sequelize-cli migration:generate --name",
-    
     "seed:run": "npx sequelize-cli db:seed:all",
     "seed:revert": "npx sequelize-cli db:seed:undo",
     "seed:revert-all": "npx sequelize-cli db:seed:undo:all",
-    "init:seed":"npx sequelize-cli seed:generate --name "
+    "init:seed": "npx sequelize-cli seed:generate --name "
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.8.15",
@@ -54,6 +53,7 @@
     "@types/node": "18.15.11",
     "@types/sequelize": "^4.28.15",
     "@types/supertest": "^2.0.11",
+    "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "eslint": "^8.0.1",
