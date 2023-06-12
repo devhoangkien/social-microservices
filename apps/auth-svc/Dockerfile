@@ -2,11 +2,9 @@ FROM node:18 as build
 
 WORKDIR /usr/apps/auth-svc
 
-ADD  package.json ./
+ADD dist package.json ./
 
-RUN npm install --production 
-
-RUN npm run build --production 
+RUN npm install --production --omit=dev
 
 FROM node:18
 

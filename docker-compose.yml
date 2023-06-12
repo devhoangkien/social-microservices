@@ -8,16 +8,13 @@ services:
       - ./apps/auth-svc/.env
     build:
       context: "./apps/auth-svc"
-      dockerfile: './apps/auth-svc/Dockerfile'
-      target: "development"
-    command: npm run start:dev
     expose:
       - 50051"
     depends_on:
       - "auth-db"
       - "cache"
     environment:
-      NODE_ENV: "production"
+      NODE_ENV: "development"
       GRPC_HOST: "0.0.0.0"
       GRPC_PORT: "50051"
       GRPC_TRACE: "all"
@@ -36,7 +33,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-    restart: "allways"
+    restart: "on-failure"
     networks:
       - backend
       - frontend
@@ -48,9 +45,6 @@ services:
       - ./apps/payment-svc/.env
     build:
       context: "./apps/payment-svc"
-      dockerfile: './apps/payment-svc/Dockerfile'
-      target: "development"
-    command: npm run start:dev
     expose:
       - 50051"
     depends_on:
@@ -76,7 +70,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-    restart: "allways"
+    restart: "on-failure"
     networks:
       - backend
       - frontend
@@ -92,9 +86,11 @@ services:
     depends_on:
       - "cache"
       - "auth-svc"
+      - "payment-svc"
     environment:
       NODE_ENV: "development"
       AUTH_SVC_URL: "auth-svc:50051"
+      PAYMENT_SVC_URL: "payment-svc:50051"
       GATEWAY_PORT: "3000"
       JWT_ACCESSTOKEN_SECRET: "VtWeuJo5cPrH1gzvLX0HwPkcbVVeMkV0/a2JFeP3hGE="
       JWT_REFRESHTOKEN_SECRET: "tPQz6vb7nJDilma85OQExilvgZX+QyEf1CL95DmfBLA="
@@ -123,9 +119,6 @@ services:
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
-      POSTGRES_EXTENSION_DB: "social-auth"
-      POSTGRES_EXTENSIONS: uuid-ossp
-      
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 30s
