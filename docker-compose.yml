@@ -14,7 +14,7 @@ services:
       - "auth-db"
       - "cache"
     environment:
-      NODE_ENV: "development"
+      NODE_ENV: "production"
       GRPC_HOST: "0.0.0.0"
       GRPC_PORT: "50051"
       GRPC_TRACE: "all"
@@ -51,7 +51,8 @@ services:
       - "payment-db"
       - "cache"
     environment:
-      NODE_ENV: "development"
+      NODE_ENV: "production
+      "
       GRPC_HOST: "0.0.0.0"
       GRPC_PORT: "50051"
       GRPC_TRACE: "all"
@@ -88,7 +89,8 @@ services:
       - "auth-svc"
       - "payment-svc"
     environment:
-      NODE_ENV: "development"
+      NODE_ENV: "production
+      "
       AUTH_SVC_URL: "auth-svc:50051"
       PAYMENT_SVC_URL: "payment-svc:50051"
       GATEWAY_PORT: "3000"
