@@ -1,48 +1,131 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 package user;
 
-import "commons.proto";
+service UserService {
+  rpc CreateUser (UserRequest) returns (UserResponse) {};
+  rpc GetUserById (UserIdRequest) returns (UserResponse) {};
+  rpc GetAllUsers (Empty) returns (UserListResponse) {};
+  rpc UpdateUser (UpdateUserRequest) returns (UserResponse) {};
+  rpc DeleteUser (UserIdRequest) returns (UserResponse) {};
+  rpc CreateUserSetting (CreateUserSettingRequest) returns (UserSettingResponse) {};
+  rpc GetUserSettingByUserId (UserIdRequest) returns (UserSettingResponse) {};
+  rpc UpdateUserSetting (UpdateUserSettingRequest) returns (UserSettingResponse) {};
+  rpc CreateUserProfile (CreateUserProfileRequest) returns (UserProfileResponse) {};
+  rpc GetUserProfileByUserId (UserIdRequest) returns (UserProfileResponse) {};
+  rpc UpdateUserProfile (UpdateUserProfileRequest) returns (UserProfileResponse) {};
+}
+
+message UserRequest {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+}
+
+message UserResponse {
+  User user = 1;
+}
+
+message UserListResponse {
+  repeated User users = 1;
+}
+
+message UpdateUserRequest {
+  string id = 1;
+  UserUpdateParams data = 2;
+}
+
+message UserUpdateParams {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+  int32 role_id = 4;
+}
+
+message UserIdRequest {
+  string id = 1;
+}
+
+message UserSettingRequest {
+  string user_id = 1;
+  string language = 2;
+  string theme = 3;
+}
+
+message UserSettingResponse {
+  UserSetting setting = 1;
+}
+
+message CreateUserSettingRequest {
+  string user_id = 1;
+  UserSettingRequest data = 2;
+}
+
+message UserProfileRequest {
+  string user_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+}
+
+message UserProfileResponse {
+  UserProfile profile = 1;
+}
+
+message CreateUserProfileRequest {
+  string user_id = 1;
+  UserProfileRequest data = 2;
+}
+
+message UpdateUserSettingRequest {
+  string user_id = 1;
+  UserSettingUpdateParams data = 2;
+}
+
+message UserSettingUpdateParams {
+  string language = 1;
+  string theme = 2;
+}
+
+message UpdateUserProfileRequest {
+  string user_id = 1;
+  UserProfileUpdateParams data = 2;
+}
+
+message UserProfileUpdateParams {
+  string first_name = 1;
+  string last_name = 2;
+}
+
+message UserSetting {
+  string id = 1;
+  string user_id = 2;
+  string language = 3;
+  string theme = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message UserProfile {
+  string id = 1;
+  string user_id = 2;
+  string first_name = 3;
+  string last_name = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
 
 message User {
   string id = 1;
-  string name = 2;
-  string email = 3;
-  string password = 4;
-  int32 age = 5;
-  string createdAt = 6;
-  string updatedAt = 7;
-  int32 version = 8;
-}
-
-message UserEdge {
-  User node = 1;
-  string cursor = 2;
-}
-
-message CreateUserInput {
-  string name = 1;
-  string email = 2;
+  string username = 2;
   string password = 3;
-  int32 age = 4;
+  string email = 4;
+  int32 role_id = 5;
+  repeated string session_id = 6;
+  string refresh_tokens_id = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
 }
 
-message UpdateUserInput {
-  string id = 1;
-  User data = 2;
-}
-
-message FindUsersPayload {
-  repeated UserEdge edges = 1;
-  commons.PageInfo pageInfo = 2;
-}
-
-service UsersService {
-  rpc find (commons.Query) returns (FindUsersPayload) {}
-  rpc findById (commons.Id) returns (User) {}
-  rpc findOne (commons.Query) returns (User) {}
-  rpc count (commons.Query) returns (commons.Count) {}
-  rpc create (CreateUserInput) returns (User) {}
-  rpc update (UpdateUserInput) returns (User) {}
-  rpc destroy (commons.Query) returns (commons.Count) {}
-}
+message Empty {}

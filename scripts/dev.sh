@@ -6,6 +6,10 @@ cd apps/payment-svc
 npm run start:dev &
 cd -
 
+cd apps/user-svc
+npm run start:dev &
+cd -
+
 cd gateway
 npm run start:dev &
 cd -
