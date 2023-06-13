@@ -8,6 +8,7 @@ import {
   grpcClientOptions,
   grpcClientOptionsProduction,
 } from './config/grpc-client.options';
+import { RpcExceptionFilter } from './middleware/exception/http.exception.filter';
 async function bootstrap() {
   const NODE_ENV = process.env.NODE_ENV || 'development';
   console.log(`NODE_ENV: ${NODE_ENV}`);
@@ -26,6 +27,7 @@ async function bootstrap() {
     );
 
     app.useLogger(app.get<Logger, LoggerService>(Logger));
+    app.useGlobalFilters(new RpcExceptionFilter());
 
     return app.listen();
   }
