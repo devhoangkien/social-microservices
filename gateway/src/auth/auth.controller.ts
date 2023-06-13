@@ -6,7 +6,11 @@ import {
   Body,
   Post,
 } from '@nestjs/common';
-import { ClientGrpcProxy, GrpcMethod } from '@nestjs/microservices';
+import {
+  ClientGrpcProxy,
+  GrpcMethod,
+  RpcException,
+} from '@nestjs/microservices';
 import { ApiProperty } from '@nestjs/swagger';
 import { Observable, firstValueFrom, lastValueFrom } from 'rxjs';
 import { UserRequest, UserResponse } from './dtos/create-user.dto';
@@ -46,11 +50,12 @@ export class AuthController implements OnModuleInit {
 
   @Post('user')
   async createUser(@Body() userData: UserRequest): Promise<any> {
-    const result = await firstValueFrom(
-      this.userClient.createUser(userData),
-    ).catch((err) => {
-      console.log(err);
-    });
-    return result;
+    try {
+      const result = await firstValueFrom(this.userClient.createUser(userData));
+      return result;
+    } catch (err) {
+      console.log('aaaaaaaaaaaaa', err);
+      throw new Error(err);
+    }
   }
 }

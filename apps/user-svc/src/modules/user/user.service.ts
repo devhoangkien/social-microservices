@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import { User, UserProfile, UserSetting } from '@prisma/client';
 import { PrismaService } from 'src/providers/prisma/prisma.service';
 
@@ -19,8 +20,32 @@ export class UserService {
   }
 
   async createUser(data: User): Promise<any> {
-    const user = await this.prisma.user.create({ data });
-    return { user };
+    const { username, email } = data;
+
+    // Check if a user with the provided username already exists
+    const existingUserByUsername = await this.prisma.user.findUnique({
+      where: { username },
+    });
+
+    if (existingUserByUsername) {
+      throw new RpcException('Username is already taken.');
+    }
+
+    // Check if a user with the provided email already exists
+    const existingUserByEmail = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (existingUserByEmail) {
+      throw new RpcException('Email is already taken.');
+    }
+    try {
+      const user = await this.prisma.user.create({ data });
+      return { user };
+    } catch (err) {
+      console.log(err);
+      throw new RpcException(err);
+    }
   }
 
   async updateUser(id: string, data: Partial<User>): Promise<any> {
