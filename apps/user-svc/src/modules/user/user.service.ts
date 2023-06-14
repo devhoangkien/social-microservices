@@ -5,6 +5,12 @@ import {
   GrpcNotFoundException,
   GrpcAlreadyExistsException,
 } from 'nestjs-grpc-exceptions';
+import {
+  encryptPassword,
+  decryptPassword,
+  comparePasswords,
+} from 'shared/utils/password.utils';
+
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
@@ -22,7 +28,7 @@ export class UserService {
   }
 
   async createUser(data: User): Promise<any> {
-    const { username, email } = data;
+    const { username, email, password } = data;
 
     // Check if a user with the provided username already exists
     const existingUserByUsername = await this.prisma.user.findUnique({
@@ -42,7 +48,21 @@ export class UserService {
       throw new GrpcAlreadyExistsException('Email is already taken.');
     }
     try {
-      const user = await this.prisma.user.create({ data });
+      // Hash the password
+      const encryptedPassword = await encryptPassword(password);
+      const comparedPasswords = await comparePasswords(
+        password,
+        encryptedPassword,
+      );
+      console.log('comparedPasswords', comparedPasswords);
+      // Create the user with the hashed password
+      const user = await this.prisma.user.create({
+        data: {
+          ...data,
+          password: encryptedPassword,
+        },
+      });
+
       return { user };
     } catch (err) {
       throw new GrpcNotFoundException(err);

@@ -29,6 +29,7 @@
     "init:seed": "npx sequelize-cli seed:generate --name "
   },
   "dependencies": {
+    "shared": "file:../../shared",
     "@grpc/grpc-js": "^1.8.15",
     "@grpc/proto-loader": "^0.7.7",
     "@nestjs/common": "^9.0.0",

@@ -55,6 +55,8 @@
     - payment-svc
       - ...
     - ...
+    - user-svc
+      - ...
   - gateway/
     - src/
       - auth/
@@ -70,6 +72,8 @@
   - docs/
   - scripts/
   - shared/
+      - utils
+        - password.utils.ts
   - docker-compose.yml
   - package.json
 ```
