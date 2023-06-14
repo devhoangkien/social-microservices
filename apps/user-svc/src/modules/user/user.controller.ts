@@ -9,7 +9,6 @@ export class UserController {
 
   @GrpcMethod('UserService', 'CreateUser')
   async createUser(user: User): Promise<User> {
-    console.log('user', user);
     return this.userService.createUser(user);
   }
 

@@ -50,11 +50,7 @@ export class UserService {
     try {
       // Hash the password
       const encryptedPassword = await encryptPassword(password);
-      const comparedPasswords = await comparePasswords(
-        password,
-        encryptedPassword,
-      );
-      console.log('comparedPasswords', comparedPasswords);
+
       // Create the user with the hashed password
       const user = await this.prisma.user.create({
         data: {
