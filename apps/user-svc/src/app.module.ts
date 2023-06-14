@@ -5,6 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 import { PrismaModule } from './providers/prisma/prisma.module';
 import { UserModule } from './modules/user/user.module';
+import { APP_FILTER } from '@nestjs/core';
+import { GrpcServerExceptionFilter } from 'nestjs-grpc-exceptions';
 
 @Module({
   imports: [
@@ -23,6 +25,12 @@ import { UserModule } from './modules/user/user.module';
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: GrpcServerExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}

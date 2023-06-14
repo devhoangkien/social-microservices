@@ -1,10 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { MicroserviceOptions } from '@nestjs/microservices';
 import { LoggerService } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
 
 import { AppModule } from './app.module';
-import { join } from 'path';
 import {
   grpcClientOptions,
   grpcClientOptionsProduction,

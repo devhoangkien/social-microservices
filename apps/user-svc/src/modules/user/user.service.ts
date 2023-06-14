@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
 import { User, UserProfile, UserSetting } from '@prisma/client';
 import { PrismaService } from 'src/providers/prisma/prisma.service';
-
+import {
+  GrpcNotFoundException,
+  GrpcAlreadyExistsException,
+} from 'nestjs-grpc-exceptions';
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
@@ -28,7 +30,7 @@ export class UserService {
     });
 
     if (existingUserByUsername) {
-      throw new RpcException('Username is already taken.');
+      throw new GrpcAlreadyExistsException('Username is already taken.');
     }
 
     // Check if a user with the provided email already exists
@@ -37,14 +39,13 @@ export class UserService {
     });
 
     if (existingUserByEmail) {
-      throw new RpcException('Email is already taken.');
+      throw new GrpcAlreadyExistsException('Email is already taken.');
     }
     try {
       const user = await this.prisma.user.create({ data });
       return { user };
     } catch (err) {
-      console.log(err);
-      throw new RpcException(err);
+      throw new GrpcNotFoundException(err);
     }
   }
 
