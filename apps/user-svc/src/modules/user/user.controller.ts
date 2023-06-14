@@ -91,4 +91,14 @@ export class UserController {
   }): Promise<UserProfile> {
     return this.userService.updateUserProfile(userId, data);
   }
+
+  @GrpcMethod('UserService', 'GetUserByEmail')
+  async getUserByEmail(email: string): Promise<User | null> {
+    return this.userService.getUserByEmail(email);
+  }
+
+  @GrpcMethod('UserService', 'GetUserByUsername')
+  async getUserByUsername(username: string): Promise<User | null> {
+    return this.userService.getUserByUsername(username);
+  }
 }

@@ -7,6 +7,8 @@ package user;
 service UserService {
   rpc CreateUser (UserRequest) returns (UserResponse) {};
   rpc GetUserById (UserIdRequest) returns (UserResponse) {};
+  rpc GetUserByUsername (UserUsernameRequest) returns (UserResponse) {};
+  rpc GetUserByEmail (UserEmailRequest) returns (UserResponse) {};
   rpc GetAllUsers (Empty) returns (UserListResponse) {};
   rpc UpdateUser (UpdateUserRequest) returns (UserResponse) {};
   rpc DeleteUser (UserIdRequest) returns (UserResponse) {};
@@ -16,6 +18,15 @@ service UserService {
   rpc CreateUserProfile (CreateUserProfileRequest) returns (UserProfileResponse) {};
   rpc GetUserProfileByUserId (UserIdRequest) returns (UserProfileResponse) {};
   rpc UpdateUserProfile (UpdateUserProfileRequest) returns (UserProfileResponse) {};
+  
+}
+
+message UserEmailRequest {
+  string email = 1;
+}
+
+message UserUsernameRequest {
+  string username = 1;
 }
 
 message UserRequest {

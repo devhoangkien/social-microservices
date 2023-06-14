@@ -7,10 +7,11 @@ import {
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { ClientGrpcProxy } from '@nestjs/microservices';
+import { ClientGrpc, ClientGrpcProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { UserRequest } from './dtos/create-user.dto';
 import { GrpcToHttpInterceptor } from 'nestjs-grpc-exceptions';
+import { LoginRequest } from './dtos/login.dto';
 @Controller('auth')
 export class AuthController implements OnModuleInit {
   constructor(
@@ -49,6 +50,13 @@ export class AuthController implements OnModuleInit {
   @UseInterceptors(GrpcToHttpInterceptor)
   async createUser(@Body() userData: UserRequest): Promise<any> {
     const result = await firstValueFrom(this.userClient.createUser(userData));
+    return result;
+  }
+
+  @Post('login')
+  @UseInterceptors(GrpcToHttpInterceptor)
+  async login(@Body() loginRequest: LoginRequest): Promise<any> {
+    const result = await firstValueFrom(this.authClient.login(loginRequest));
     return result;
   }
 }

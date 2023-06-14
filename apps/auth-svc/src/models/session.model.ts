@@ -6,7 +6,6 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { User } from './user.model';
 
 @Table({ tableName: 'sessions', underscored: true })
 export class Session extends Model<Session> {
@@ -17,8 +16,7 @@ export class Session extends Model<Session> {
   })
   id: string;
 
-  @ForeignKey(() => User)
-  @Column({ type: DataType.UUID, allowNull: false })
+  @Column({ type: DataType.STRING, allowNull: false })
   userId: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
@@ -26,9 +24,6 @@ export class Session extends Model<Session> {
 
   @Column({ type: DataType.DATE, allowNull: false })
   expiresAt: Date;
-
-  @BelongsTo(() => User)
-  user: User;
 
   @Column({ type: DataType.STRING, allowNull: false })
   ip: string;

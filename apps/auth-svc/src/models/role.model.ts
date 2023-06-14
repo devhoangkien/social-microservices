@@ -7,8 +7,6 @@ import {
   PrimaryKey,
   AutoIncrement,
 } from 'sequelize-typescript';
-import { User } from './user.model';
-import { UserRole } from './userRole.model';
 import { RolePermission } from './rolePermission.model';
 import { Permission } from './permission.model';
 
@@ -34,9 +32,6 @@ export class Role extends Model<Role> {
     allowNull: false,
   })
   level: number;
-
-  @BelongsToMany(() => User, () => UserRole)
-  users: User[];
 
   @BelongsToMany(() => Permission, () => RolePermission)
   permissions: Permission[];

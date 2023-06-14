@@ -15,4 +15,23 @@ export class AuthController {
     );
     return { result };
   }
+
+  @GrpcMethod('AuthService', 'register')
+  async register(data: any, metadata: any) {
+    // Xử lý yêu cầu đăng ký ở đây
+    const result = await this.authService.register(
+      data.username,
+      data.password,
+      data.email,
+    );
+    return { result };
+  }
+
+  @GrpcMethod('AuthService', 'login')
+  async login(data: any) {
+    const { username, password } = data;
+
+    const result = await this.authService.login(username, password);
+    return { result };
+  }
 }
