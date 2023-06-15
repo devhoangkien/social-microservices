@@ -18,5 +18,13 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
   },
+  "include": [
+    "src",
+    "../shared"
+  ],
+  "exclude": [
+    "node_modules",
+    "test"
+  ]
   
 }

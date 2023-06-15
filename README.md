@@ -9,10 +9,11 @@
 - Clone: `$ git clone https://github.com/devhoangkien/social-microservices.git`
 - Install package: `cd social-microservices && yarn install-all || npm run install-all`
 - docker: `yarn build `, `docker compose up`
+- dev docker `yarn dev`
 
 ## Directory structure 
 ``` shell
-- app/
+- root/
   - _proto
   - apps/
     - auth-svc/
@@ -55,6 +56,8 @@
     - payment-svc
       - ...
     - ...
+    - user-svc
+      - ...
   - gateway/
     - src/
       - auth/
@@ -70,6 +73,8 @@
   - docs/
   - scripts/
   - shared/
+      - utils
+        - password.utils.ts
   - docker-compose.yml
   - package.json
 ```

@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './modules/auth/auth.module';
-import { ConfigService, ConfigModule } from '@nestjs/config';
-import { LoggerModule, PinoLogger } from 'nestjs-pino';
+import { ConfigModule } from '@nestjs/config';
+import { LoggerModule } from 'nestjs-pino';
 import { DatabaseModule } from './database/database.module';
 
 @Module({
@@ -19,7 +18,6 @@ import { DatabaseModule } from './database/database.module';
         },
       },
     }),
-    AuthModule,
     DatabaseModule,
   ],
   controllers: [AppController],

@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { LoggerService } from '@nestjs/common';
+import { LoggerService, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
 
@@ -9,7 +9,12 @@ async function bootstrap() {
   // Logger
   app.useLogger(app.get<Logger, LoggerService>(Logger));
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
-
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      forbidUnknownValues: false,
+    }),
+  );
   // Swagger
   const config = new DocumentBuilder()
     .setTitle('Social Microservices')
