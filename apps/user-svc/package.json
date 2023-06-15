@@ -19,14 +19,16 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "copy:protos": "cp -r ../../_proto ./src/",
+    "copy:shared": "cp -r ../../shared ./node_modules/",
     "db:migrate-save": "prisma migrate dev",
     "db:migrate-up": "prisma migrate deploy",
     "db:clean": "ts-node scripts/clean.ts",
     "db:init": "npx prisma migrate dev --name init",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "docker:build": "docker-compose build user-svc"
+
   },
   "dependencies": {
-    "shared": "file:../../shared",
     "@grpc/grpc-js": "^1.8.15",
     "@grpc/proto-loader": "^0.7.7",
     "@nestjs/common": "^9.0.0",

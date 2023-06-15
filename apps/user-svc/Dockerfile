@@ -3,6 +3,7 @@ FROM node:18 as build
 WORKDIR /usr/apps/user-svc
 
 COPY prisma ./prisma/ 
+
 ADD dist package.json ./
 
 RUN npm install --production --omit=dev

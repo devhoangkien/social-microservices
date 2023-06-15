@@ -98,7 +98,8 @@ export class UserController {
   }
 
   @GrpcMethod('UserService', 'GetUserByUsername')
-  async getUserByUsername(username: string): Promise<User | null> {
-    return this.userService.getUserByUsername(username);
+  async getUserByUsername(data: any): Promise<User | null> {
+    console.log('dât', data);
+    return this.userService.getUserByUsername(data.username);
   }
 }

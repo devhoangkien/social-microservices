@@ -1,15 +1,4 @@
-cd apps/auth-svc
-npm run start:dev &
-cd -
+cd apps/auth-svc && npm run build && npm run docker:build && cd -
+cd apps/user-svc && npm run build && npm run docker:build && cd -
 
-cd apps/payment-svc
-npm run start:dev &
-cd -
-
-cd apps/user-svc
-npm run start:dev &
-cd -
-
-cd gateway
-npm run start:dev &
-cd -
+docker compose up

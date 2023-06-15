@@ -8,6 +8,8 @@ services:
       - ./apps/auth-svc/.env
     build:
       context: "./apps/auth-svc"
+    volumes:
+      - ./shared:/usr/apps/auth-svc/node_modules/shared
     expose:
       - 50051"
     depends_on:
@@ -21,6 +23,7 @@ services:
       GRPC_VERBOSITY: "DEBUG"
       DB_HOST: "auth-db"
       DB_PORT: "5432"
+      USER_SVC_URL: "user-svc:50051"
       DB_NAME: "social-auth"
       DB_USERNAME: "postgres"
       DB_PASSWORD: "postgres"
@@ -28,6 +31,9 @@ services:
       DB_SYNC: "true"
       REDIS_HOST: "cache"
       REDIS_PORT: "6379"
+      PASSWORD_SECRET_KEY: "social_user_secret"
+      JWT_EXPIRATION_TIME: "1d"
+      JWT_SECRET_KEY: "social_auth_secret"
     healthcheck:
       test: ["CMD", "/bin/grpc_health_probe", "-addr=:50051"]
       interval: 30s
@@ -82,6 +88,8 @@ services:
       - ./apps/user-svc/.env
     build:
       context: "./apps/user-svc"
+    volumes:
+      - ./shared:/usr/apps/user-svc/node_modules/shared
     expose:
       - 50051"
     depends_on:
@@ -102,7 +110,7 @@ services:
       DB_SYNC: "true"
       REDIS_HOST: "cache"
       REDIS_PORT: "6379"
-      DATABASE_URL: "postgres://postgres:postgres@user-db:5432/social-user?schema=public&connection_limit=1"
+      DATABASE_URL: "postgres://postgres:postgres@user-db:5432/social-user"
     healthcheck:
       test: ["CMD", "/bin/grpc_health_probe", "-addr=:50051"]
       interval: 30s

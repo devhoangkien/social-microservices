@@ -27,7 +27,7 @@ async function bootstrap() {
     );
 
     app.useLogger(app.get<Logger, LoggerService>(Logger));
-    app.useGlobalFilters(new RpcExceptionFilter());
+    // app.useGlobalFilters(new RpcExceptionFilter());
 
     return app.listen();
   }

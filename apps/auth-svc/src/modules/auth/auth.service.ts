@@ -1,12 +1,23 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { PinoLogger } from 'nestjs-pino';
 import { ClientGrpcProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import * as jwt from 'jsonwebtoken';
+
+import { comparePasswords } from 'shared/utils/password.utils';
+import { RolesService } from '../roles/roles.service';
+import {
+  GrpcNotFoundException,
+  GrpcUnknownException,
+} from 'nestjs-grpc-exceptions';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements OnModuleInit {
   constructor(
     private readonly logger: PinoLogger,
+    private readonly roleService: RolesService,
+
+    // Inject the GRPC client for the user service
     @Inject('UserServiceClient')
     private readonly userServiceClient: ClientGrpcProxy,
   ) {
@@ -42,31 +53,55 @@ export class AuthService {
     return true;
   }
 
-  async login(username: string, password: string): Promise<boolean> {
-    this.logger.info('AuthService#login.call %o', username);
+  async login(username: string, password: string): Promise<any> {
+    try {
+      this.logger.info('AuthService#login.call %o', username);
 
-    // Call the user service to retrieve the user by username
-    const userResponse = await firstValueFrom(
-      this.userClient.getUserByUsername({ username }),
-    );
+      // Call the user service to retrieve the user by username
+      const userResponse: any = await firstValueFrom(
+        this.userClient.getUserByUsername({ username }),
+      );
 
-    console.log('userResponse: ', userResponse);
+      console.log('userResponse: ', userResponse);
 
-    // const user = userResponse
-    // if (!user) {
-    //   throw new Error('User not found');
-    // }
+      const user = userResponse.user;
+      if (!user) {
+        throw new GrpcNotFoundException('Wrong account or password');
+      }
 
-    // // Check if the provided password matches the stored password
-    // const isPasswordValid = user.password === password;
+      const isPasswordValid = await comparePasswords(password, user.password);
+      if (!isPasswordValid) {
+        throw new GrpcNotFoundException('Wrong account or password');
+      }
 
-    // if (isPasswordValid) {
-    //   // Perform additional login operations if needed
-    //   // ...
+      console.log('isPasswordValid: ', isPasswordValid);
 
-    //   return true;
-    // }
+      // Get user role
+      const roleResponse: any = await this.roleService.getRoleById(
+        user.role_id,
+      );
+      console.log('roleResponse: ', roleResponse);
+      console.log('roleResponse: ', roleResponse.name);
 
-    return false;
+      // Generate JWT token
+      const tokenPayload = {
+        username: user.username,
+        role: roleResponse.name,
+        email: user.email,
+      };
+      const token = jwt.sign(tokenPayload, process.env.JWT_SECRET_KEY, {
+        expiresIn: process.env.JWT_EXPIRATION_TIME,
+      });
+      console.log('token: ', token);
+
+      return {
+        access_token: token,
+        role: roleResponse.name,
+        email: user.email,
+        username: user.username,
+      };
+    } catch (error) {
+      throw new GrpcUnknownException(error);
+    }
   }
 }

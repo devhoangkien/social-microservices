@@ -28,10 +28,11 @@ export class AuthController {
   }
 
   @GrpcMethod('AuthService', 'login')
-  async login(data: any) {
+  async login(data: any): Promise<any> {
     const { username, password } = data;
 
     const result = await this.authService.login(username, password);
+    console.log('resultresult', { result });
     return { result };
   }
 }

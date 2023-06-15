@@ -48,8 +48,10 @@ export class AuthController implements OnModuleInit {
 
   @Post('user')
   @UseInterceptors(GrpcToHttpInterceptor)
-  async createUser(@Body() userData: UserRequest): Promise<any> {
-    const result = await firstValueFrom(this.userClient.createUser(userData));
+  async createUser(@Body() userRequest: UserRequest): Promise<any> {
+    const result = await firstValueFrom(
+      this.userClient.createUser(userRequest),
+    );
     return result;
   }
 
@@ -57,6 +59,7 @@ export class AuthController implements OnModuleInit {
   @UseInterceptors(GrpcToHttpInterceptor)
   async login(@Body() loginRequest: LoginRequest): Promise<any> {
     const result = await firstValueFrom(this.authClient.login(loginRequest));
+    console.log('const result =const result =const result =', result);
     return result;
   }
 }

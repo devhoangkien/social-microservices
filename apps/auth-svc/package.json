@@ -19,6 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "copy:protos": "cp -r ../../_proto ./src/",
+    "copy:shared": "cp -r ../../shared ./node_modules/",
     "migration:run": "npx sequelize-cli db:migrate",
     "db:create": "npx sequelize-cli db:create",
     "migration:revert": "npx sequelize-cli db:migrate:undo",
@@ -26,7 +27,8 @@
     "seed:run": "npx sequelize-cli db:seed:all",
     "seed:revert": "npx sequelize-cli db:seed:undo",
     "seed:revert-all": "npx sequelize-cli db:seed:undo:all",
-    "init:seed": "npx sequelize-cli seed:generate --name "
+    "init:seed": "npx sequelize-cli seed:generate --name ",
+    "docker:build": "docker-compose build auth-svc"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.8.15",
@@ -36,6 +38,10 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/microservices": "^9.4.2",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/sequelize": "^9.0.2",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.0",
+    "nestjs-grpc-exceptions": "^0.2.0",
     "nestjs-pino": "^3.2.0",
     "pg": "^8.11.0",
     "pino-http": "^8.3.3",
@@ -43,8 +49,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "sequelize": "^6.32.0",
-    "sequelize-typescript": "^2.1.5",
-    "shared": "file:../../shared"
+    "sequelize-typescript": "^2.1.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
@@ -52,6 +57,7 @@
     "@nestjs/testing": "^9.0.0",
     "@types/express": "^4.17.13",
     "@types/jest": "29.5.0",
+    "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "18.15.11",
     "@types/sequelize": "^4.28.15",
     "@types/supertest": "^2.0.11",

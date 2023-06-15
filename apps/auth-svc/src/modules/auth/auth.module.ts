@@ -9,10 +9,14 @@ import {
 } from '@nestjs/microservices';
 import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RolesModule } from '../roles/roles.module';
+import { DatabaseModule } from 'src/database/database.module';
 
 @Module({
   imports: [
     ConfigModule,
+    RolesModule,
+    DatabaseModule,
     ClientsModule.register([
       {
         name: 'AUTH_SERVICE',
@@ -48,5 +52,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     },
   ],
   controllers: [AuthController],
+  exports: [AuthService, 'UserServiceClient'],
 })
 export class AuthModule {}
