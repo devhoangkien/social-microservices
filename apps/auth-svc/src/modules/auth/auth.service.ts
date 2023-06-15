@@ -95,10 +95,11 @@ export class AuthService implements OnModuleInit {
       console.log('token: ', token);
 
       return {
-        access_token: token,
-        role: roleResponse.name,
-        email: user.email,
-        username: user.username,
+        result: {
+          access_token: token,
+          role: roleResponse.name,
+          email: user.email,
+        },
       };
     } catch (error) {
       throw new GrpcUnknownException(error);

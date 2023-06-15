@@ -60,6 +60,6 @@ export class AuthController implements OnModuleInit {
   async login(@Body() loginRequest: LoginRequest): Promise<any> {
     const result = await firstValueFrom(this.authClient.login(loginRequest));
     console.log('const result =const result =const result =', result);
-    return result;
+    return result; // Trả về thuộc tính result từ phản hồi
   }
 }
