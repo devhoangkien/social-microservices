@@ -19,3 +19,15 @@ COPY --from=build /usr/apps/user-svc .
 EXPOSE 50051
 
 CMD ["node", "main.js"]
+
+# Development
+# Stage 1: Xây dựng ứng dụng
+FROM node:18 as development
+
+WORKDIR /usr/apps/user-svc
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "run", "start:dev"]

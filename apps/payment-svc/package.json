@@ -22,7 +22,7 @@
     "migration:run": "npx sequelize-cli db:migrate",
     "migration:revert": "npx sequelize-cli db:migrate:undo",
     "migration:generate": "sequelize-cli migration:generate --name",
-    "db:create": "sequelize-cli db:create ",
+    "db:create": "npx sequelize-cli db:create ",
 
     
     "seed:run": "npx sequelize-cli db:seed:all",

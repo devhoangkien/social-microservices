@@ -93,14 +93,12 @@ export class AuthService implements OnModuleInit {
         expiresIn: process.env.JWT_EXPIRATION_TIME,
       });
       console.log('token: ', token);
-
-      return {
-        result: {
-          access_token: token,
-          role: roleResponse.name,
-          email: user.email,
-        },
+      const result = {
+        access_token: token,
+        role: roleResponse.name,
+        email: user.email,
       };
+      return result;
     } catch (error) {
       throw new GrpcUnknownException(error);
     }

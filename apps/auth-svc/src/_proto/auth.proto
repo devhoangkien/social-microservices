@@ -14,14 +14,9 @@ message AuthRequest {
 }
 
 message AuthResponse {
-  Auth result = 1;
+  string result = 1;
 }
 
-message Auth {
-  string access_token = 1;
-  string role = 2;
-  string email = 3;
-}
 
 message RegisterRequest {
   string username = 1;
@@ -39,5 +34,12 @@ message LoginRequest {
 }
 
 message LoginResponse {
-  bool result = 1;
+  Auth result = 1;
 }
+
+message Auth {
+  string access_token = 1;
+  string role = 2;
+  string email = 3;
+}
+
