@@ -12,13 +12,22 @@ async function bootstrap() {
   const NODE_ENV = process.env.NODE_ENV || 'development';
   console.log(`NODE_ENV: ${NODE_ENV}`);
 
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AppModule,
-    grpcClientOptionsProduction,
-  );
+  if (NODE_ENV === 'development') {
+    const app = await NestFactory.create(AppModule, { bufferLogs: true });
+    app.connectMicroservice<MicroserviceOptions>(grpcClientOptions);
+    app.useLogger(app.get<Logger, LoggerService>(Logger));
+    await app.startAllMicroservices();
+    await app.listen(50051);
+    console.log(`Application is running on: ${await app.getUrl()}`);
+  } else {
+    const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+      AppModule,
+      grpcClientOptionsProduction,
+    );
 
-  app.useLogger(app.get<Logger, LoggerService>(Logger));
+    app.useLogger(app.get<Logger, LoggerService>(Logger));
 
-  return app.listen();
+    return app.listen();
+  }
 }
 bootstrap();

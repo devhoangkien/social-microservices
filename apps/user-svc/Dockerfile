@@ -1,10 +1,10 @@
-FROM node:18 as build
+FROM node:18 as production
 
 WORKDIR /usr/apps/user-svc
 
 COPY prisma ./prisma/ 
 
-ADD dist package.json ./
+ADD  package.json ./
 
 RUN npm install --production --omit=dev
 

@@ -80,8 +80,6 @@ export class AuthService implements OnModuleInit {
       const roleResponse: any = await this.roleService.getRoleById(
         user.role_id,
       );
-      console.log('roleResponse: ', roleResponse);
-      console.log('roleResponse: ', roleResponse.name);
 
       // Generate JWT token
       const tokenPayload = {
@@ -92,13 +90,11 @@ export class AuthService implements OnModuleInit {
       const token = jwt.sign(tokenPayload, process.env.JWT_SECRET_KEY, {
         expiresIn: process.env.JWT_EXPIRATION_TIME,
       });
-      console.log('token: ', token);
-      const result = {
-        access_token: token,
+      return {
+        token: token,
         role: roleResponse.name,
         email: user.email,
       };
-      return result;
     } catch (error) {
       throw new GrpcUnknownException(error);
     }

@@ -1,8 +1,8 @@
-FROM node:18 as build
+FROM node:18 as production
 
 WORKDIR /usr/apps/payment-svc
 
-ADD dist package.json ./
+ADD  package.json ./
 
 RUN npm install --production --omit=dev
 

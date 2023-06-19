@@ -8,7 +8,7 @@ services:
       - ./apps/auth-svc/.env
     build:
       context: "./apps/auth-svc"
-      target: development
+      target: production
     volumes:
       - ./apps/auth-svc:/usr/apps/auth-svc
       - ./shared:/usr/apps/auth-svc/node_modules/shared
@@ -18,7 +18,7 @@ services:
       - "auth-db"
       - "cache"
     environment:
-      NODE_ENV: "development"
+      NODE_ENV: "production"
       GRPC_HOST: "0.0.0.0"
       GRPC_PORT: "50051"
       GRPC_TRACE: "all"
@@ -53,7 +53,7 @@ services:
       - ./apps/payment-svc/.env
     build:
       context: "./apps/payment-svc"
-      target: development
+      target: production
     volumes:
       - ./apps/payment-svc:/usr/apps/payment-svc
       - ./shared:/usr/apps/payment-svc/node_modules/shared
@@ -63,7 +63,7 @@ services:
       - "payment-db"
       - "cache"
     environment:
-      NODE_ENV: "development"
+      NODE_ENV: "production"
       GRPC_HOST: "0.0.0.0"
       GRPC_PORT: "50051"
       GRPC_TRACE: "all"
@@ -94,7 +94,7 @@ services:
       - ./apps/user-svc/.env
     build:
       context: "./apps/user-svc"
-      target: development
+      target: production
     volumes:
       - ./apps/user-svc:/usr/apps/user-svc
       - ./shared:/usr/apps/user-svc/node_modules/shared
@@ -104,7 +104,7 @@ services:
       - "user-db"
       - "cache"
     environment:
-      NODE_ENV: "development"
+      NODE_ENV: "production"
       GRPC_HOST: "0.0.0.0"
       GRPC_PORT: "50051"
       GRPC_TRACE: "all"
@@ -135,7 +135,7 @@ services:
     container_name: "gateway"
     build:
       context: "./gateway"
-      target: development
+      target: production
     volumes:
       - ./gateway:/usr/apps/gateway
       - ./shared:/usr/apps/gateway/node_modules/shared
@@ -147,7 +147,7 @@ services:
       - "payment-svc"
       - "user-svc"
     environment:
-      NODE_ENV: "development"
+      NODE_ENV: "production"
       AUTH_SVC_URL: "auth-svc:50051"
       PAYMENT_SVC_URL: "payment-svc:50051"
       USER_SVC_URL: "user-svc:50051"

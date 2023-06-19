@@ -31,6 +31,8 @@ export class AuthController {
   async login(data: any): Promise<any> {
     const { username, password } = data;
 
-    return this.authService.login(username, password);
+    const result = await this.authService.login(username, password);
+    console.log('result: ', result);
+    return result;
   }
 }
