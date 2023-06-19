@@ -90,12 +90,14 @@ export class AuthService implements OnModuleInit {
       const token = jwt.sign(tokenPayload, process.env.JWT_SECRET_KEY, {
         expiresIn: process.env.JWT_EXPIRATION_TIME,
       });
+      console.log('token: ', token);
       return {
         token: token,
         role: roleResponse.name,
         email: user.email,
       };
     } catch (error) {
+      console.log('error: ', error);
       throw new GrpcUnknownException(error);
     }
   }

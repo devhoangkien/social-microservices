@@ -1,4 +1,4 @@
-FROM node:18 as production
+FROM node:18 as build
 
 WORKDIR /usr/apps/payment-svc
 
