@@ -1,8 +1,8 @@
-FROM node:18-alpine as build
+FROM node:18-alpine as production
 
 WORKDIR /usr/apps/gateway
 
-COPY dist package.json ./
+COPY  package.json ./
 
 RUN npm install --production --omit=dev
 

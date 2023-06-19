@@ -58,8 +58,9 @@ export class AuthController implements OnModuleInit {
   @Post('login')
   @UseInterceptors(GrpcToHttpInterceptor)
   async login(@Body() loginRequest: LoginRequest): Promise<any> {
+    console.log('loginRequest', loginRequest);
     const result = await firstValueFrom(this.authClient.login(loginRequest));
-    console.log('const result =const result =const result =', result);
+    console.log('loginRequestloginRequest', result);
     return result; // Trả về thuộc tính result từ phản hồi
   }
 }
